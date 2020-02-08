@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  mongo:
+    build: ./mongo/
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpass
+      - MONGO_INITDB_DATABASE=admin
+    volumes:
+      - ./mongo/data:/data/db
+
+  backend:
+    build: ./backend
+    depends_on:
+      - mongo
+    ports:
+      - '7000:7000'
+    volumes:
+      - ./backend/src:/home/backend/src
+
+  ocr-service:
+    build: ./ocr-service
+    depends_on:
+      - mongo
+    ports:
+      - '8080:8080'
+    environment:
+      PORT: 8080
