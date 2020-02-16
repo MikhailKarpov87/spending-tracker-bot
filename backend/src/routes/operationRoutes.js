@@ -5,47 +5,24 @@ const Operation = mongoose.model('Operation');
 
 module.exports = app => {
   app.get('/api/operations/:user_id/last_10', async (req, res) => {
-    const operations = await Operation.find()
-      .sort({ createdAt: 1 })
-      .limit(3);
+    const userId = req.params.user_id;
+    console.log(userId);
+    if (!userId) {
+      res.send(401);
+    }
+    const operations = await Operation.find({ userId })
+      .sort({ createdAt: -1 })
+      .limit(10);
     res.send(operations);
   });
 
-  app.get('/api/operations/:user_id/month_top_10', async (req, res) => {
-    const operations = await Operation.find()
-      .sort({ createdAt: 1 })
-      .limit(3);
-    res.send(operations);
-  });
-
-  app.get('/api/operations/:user_id', async (req, res) => {
-    try {
-      const operations = await Operation.find();
-      res.send(operations);
-    } catch (err) {
-      res.send(500, err);
-    }
-  });
-
-  app.get('/api/operations/:user_id/:id', async (req, res) => {
-    try {
-      await Operation.findOne({
-        _user: req.user.id,
-        _id: req.params.id,
-      });
-      res.send(operation);
-    } catch (err) {
-      res.send(500, err);
-    }
-  });
-
-  app.post('/api/operations', async (req, res) => {
-    const { category, amount, imageUrl, messageText, userId } = req.body;
+  app.post('/api/operations/:user_id', async (req, res) => {
+    const { category, amount, receiptImageUrl, messageText, userId } = req.body;
 
     const operation = new Operation({
       category,
       amount,
-      receiptImageUrl: imageUrl,
+      receiptImageUrl,
       notes: messageText,
       userId,
     });

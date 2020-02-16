@@ -1,5 +1,3 @@
-const OCR_SERVICE_URL = 'http://ocr-service:8080';
-
 const messages = {
   welcomeMessage: username =>
     `Hey, *${username}*! Let's track your expenses 🤖. Use menu to add your operations or to view reports.`,
@@ -31,4 +29,4 @@ const initialState = {
   category: undefined,
 };
 
-module.exports = { OCR_SERVICE_URL, defaultCategories, initialState, messages, totalWordRegex, amountRegex, reports };
+module.exports = { defaultCategories, initialState, messages, totalWordRegex, amountRegex, reports };

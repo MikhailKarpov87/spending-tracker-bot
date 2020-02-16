@@ -21,9 +21,17 @@ services:
     volumes:
       - ./backend/src:/home/backend/src
 
-  ocr-service:
+  bot:
     restart: unless-stopped
-    build: ./ocr-service
+    build: ./bot
+    depends_on:
+      - backend
+    volumes:
+      - ./bot/src:/home/bot/src
+
+  ocr:
+    restart: unless-stopped
+    build: ./ocr
     depends_on:
       - mongo
     ports:

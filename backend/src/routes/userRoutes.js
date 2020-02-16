@@ -4,49 +4,33 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
 module.exports = app => {
-  app.get('/api/users', async (req, res) => {
-    const users = await User.find();
-    res.send(users);
+  app.get('/api/users/:user_id', async (req, res) => {
+    const userId = req.params.user_id;
+
+    const users = await User.find({ userId });
+
+    if (users.length) {
+      res.send(users);
+    } else {
+      res.sendStatus(204);
+    }
   });
 
-  app.get('/api/operations/:user_id/month_top_10', async (req, res) => {
-    const operations = await Operation.find()
-      .sort({ createdAt: 1 })
-      .limit(3);
-    res.send(operations);
-  });
+  app.post('/api/users', async (req, res) => {
+    const { name, userId, categories } = req.body;
 
-  app.get('/api/operations/:user_id', async (req, res) => {
-    console.log(req.params.user_id);
-    // const operations = await Operation.find({ _user: req.user_id });
-    const operations = await Operation.find();
-    res.send(operations);
-  });
-
-  app.get('/api/operations/:user_id/:id', async (req, res) => {
-    const operation = await Operation.findOne({
-      _user: req.user.id,
-      _id: req.params.id,
-    });
-
-    res.send(operation);
-  });
-
-  app.post('/api/operations', async (req, res) => {
-    const { title, content, imageUrl } = req.body;
-
-    const operation = new Operation({
-      title,
-      content,
-      imageUrl,
-      _user: req.user.id,
+    const user = new User({
+      name,
+      userId,
+      categories,
     });
 
     try {
-      await operation.save();
-      res.send(operation);
+      user.save();
+      res.send(200);
     } catch (err) {
-      res.send(400, err);
+      console.log(err);
+      res.send(500);
     }
   });
 };

@@ -8,10 +8,11 @@ const startScene = new Scene('startScene');
 
 startScene.enter(async ctx => {
   const { username, id } = ctx.message.from;
-  const foundUser = await ctx.db.getUser(username);
+  const foundUser = await ctx.db.getUser(id);
 
   if (!foundUser) {
-    ctx.db.addUser({ name: username, user_id: id, categories: defaultCategories });
+    const result = await ctx.db.addUser({ name: username, userId: id, categories: defaultCategories });
+    console.log(result);
     await ctx.replyWithMarkdown(messages.welcomeMessage(username), getKeyboardForItems(mainMenuItems));
   } else {
     await ctx.replyWithMarkdown(messages.welcomeBack(username), getKeyboardForItems(mainMenuItems));

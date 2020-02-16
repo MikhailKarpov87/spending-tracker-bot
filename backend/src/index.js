@@ -15,8 +15,6 @@ mongoose
   .then(() => console.log('Connected'))
   .catch(err => console.log('Caught', err.stack));
 
-require('./services/bot');
-
 const app = express();
 
 app.use(bodyParser.json());

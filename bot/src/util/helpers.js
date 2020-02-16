@@ -1,7 +1,9 @@
+require('dotenv').config();
+const { OCR_SERVICE_URL } = process.env;
 const { Markup } = require('telegraf');
 const axios = require('axios');
 const FormData = require('form-data');
-const { OCR_SERVICE_URL, messages, totalWordRegex, amountRegex } = require('./constants');
+const { messages, totalWordRegex, amountRegex } = require('./constants');
 
 const getTextFromFile = fileUrl => {
   const filename = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);

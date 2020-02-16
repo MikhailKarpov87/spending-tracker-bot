@@ -39,8 +39,8 @@ addOperationScene.on('message', async ctx => {
     await ctx.telegram
       .getFile(photo.file_id)
       .then(({ file_path }) => {
-        ctx.session.imageUrl = `https://api.telegram.org/file/bot${botToken}/${file_path}`;
-        return getTextFromFile(ctx.session.imageUrl);
+        ctx.session.receiptImageUrl = `https://api.telegram.org/file/bot${botToken}/${file_path}`;
+        return getTextFromFile(ctx.session.receiptImageUrl);
       })
       .then(text => getAmountFromText(text))
       .then(amount => {
