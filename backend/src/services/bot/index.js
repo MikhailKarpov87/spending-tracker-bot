@@ -3,7 +3,7 @@ const botToken = process.env.BOT_TOKEN;
 const Telegraf = require('telegraf');
 const Stage = require('telegraf/stage');
 const session = require('telegraf/session');
-const { addUser, getUser, addOperation } = require('./actions');
+const { addUser, getUser, addOperation, getLastOperations } = require('./actions');
 const { messages } = require('./util/constants');
 const startScene = require('./controllers/start');
 const mainMenuScene = require('./controllers/main_menu');
@@ -13,7 +13,7 @@ const selectCategoryScene = require('./controllers/select_category');
 const bot = new Telegraf(botToken);
 
 //  Adding db methods into telegram context object
-bot.context.db = { addUser, getUser, addOperation };
+bot.context.db = { addUser, getUser, addOperation, getLastOperations };
 
 const stage = new Stage([startScene, mainMenuScene, addOperationScene, selectCategoryScene]);
 

@@ -34,7 +34,6 @@ addOperationScene.on('message', async ctx => {
     }
   } else {
     const photo = _.last(_.sortBy(ctx.message.photo, ['width', 'height']));
-
     await ctx.replyWithMarkdown(messages.waitSearchingForAmount, getKeyboardForItems(backMenuItem));
     const typingStatus = setInterval(() => ctx.telegram.sendChatAction(ctx.chat.id, 'typing'), 5000);
     await ctx.telegram
@@ -44,7 +43,6 @@ addOperationScene.on('message', async ctx => {
         return getTextFromFile(ctx.session.imageUrl);
       })
       .then(text => getAmountFromText(text))
-
       .then(amount => {
         ctx.session.amount = amount;
         clearInterval(typingStatus);

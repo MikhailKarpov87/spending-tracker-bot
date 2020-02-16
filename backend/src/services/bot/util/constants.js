@@ -7,6 +7,7 @@ const messages = {
   valueNotFoundOnPhoto: 'Operation value was not found on photo. Please load another photo or enter value manually.',
   chooseCategoryOrEnterAmount: amount =>
     `Operation amount is *${amount}*. Choose category if it is a correct amount or enter amount manually.`,
+  chooseCategory: 'What report do you want to see',
   operationWasAdded: operationData => `✅ Operation was added: *${operationData.amount}* for ${operationData.category}`,
   enterAmountOrSendPhoto: 'Enter amount or send a photo of receipt with Total amount',
   waitSearchingForAmount: "Please wait. I'm searching for *Total* value on the photo 🤖",
@@ -16,6 +17,8 @@ const messages = {
 };
 
 const defaultCategories = ['🛒Groceries', '🍿Entertainment', '🏥Medicine', '🛍Shopping'];
+
+const reports = ['Last 10 operations', 'Top 10 operations of month', 'All expenses by category'];
 
 const totalWordRegex = new RegExp(/итог|итого|total/gi);
 
@@ -28,4 +31,4 @@ const initialState = {
   category: undefined,
 };
 
-module.exports = { OCR_SERVICE_URL, defaultCategories, initialState, messages, totalWordRegex, amountRegex };
+module.exports = { OCR_SERVICE_URL, defaultCategories, initialState, messages, totalWordRegex, amountRegex, reports };

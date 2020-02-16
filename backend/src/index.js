@@ -30,6 +30,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/operationRoutes')(app);
+require('./routes/userRoutes')(app);
 
 if (['production'].includes(process.env.NODE_ENV)) {
   app.use(express.static('client/build'));

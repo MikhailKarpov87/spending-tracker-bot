@@ -1,4 +1,4 @@
-const Scene = require('telegraf/scenes/base');
+const Scene = require('./node_modules/telegraf/scenes/base');
 const { backMenuItem, addAnotherOperationMenuItem } = require('../../util/keyboards');
 const { getExactValueFromText, getKeyboardForItems } = require('../../util/helpers');
 const { defaultCategories, messages } = require('../../util/constants');

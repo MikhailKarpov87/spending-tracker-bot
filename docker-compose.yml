@@ -2,6 +2,7 @@ version: '3.3'
 
 services:
   mongo:
+    restart: unless-stopped
     build: ./mongo/
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
@@ -11,6 +12,7 @@ services:
       - ./mongo/data:/data/db
 
   backend:
+    restart: unless-stopped
     build: ./backend
     depends_on:
       - mongo
@@ -20,6 +22,7 @@ services:
       - ./backend/src:/home/backend/src
 
   ocr-service:
+    restart: unless-stopped
     build: ./ocr-service
     depends_on:
       - mongo
