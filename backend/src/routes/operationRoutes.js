@@ -80,9 +80,10 @@ module.exports = app => {
 
   app.post('/api/operations/:user_id', async (req, res) => {
     try {
-      const { category, amount, receiptImageUrl, messageText, userId } = req.body;
+      const { category, amount, receiptImageUrl, messageText } = req.body;
+      const userId = req.params.user_id;
 
-      if (!userId || amount || category) {
+      if (!userId || !amount || !category) {
         throw new ErrorHandler('500', 'Wrong data format');
       }
 
@@ -94,8 +95,8 @@ module.exports = app => {
         userId,
       });
 
-      const result = await operation.save();
-      res.send(200);
+      await operation.save();
+      res.sendStatus(200);
     } catch (err) {
       console.log(err);
       throw new ErrorHandler(500, 'Internal server error');

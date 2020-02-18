@@ -1,6 +1,7 @@
 const { reports } = require('./constants');
 
-const mainMenuItems = [['Add operation'], reports];
+const reportLabels = reports.map(report => report.reportLabel);
+const mainMenuItems = [['Add operation'], reportLabels];
 const operationAddedMenuItems = ['Back', 'Add another'];
 const backMenuItem = ['Back'];
 const addAnotherOperationMenuItem = ['Add another'];

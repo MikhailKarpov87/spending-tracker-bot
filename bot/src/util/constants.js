@@ -16,7 +16,11 @@ const messages = {
 
 const defaultCategories = ['🛒Groceries', '🍿Entertainment', '🏥Medicine', '🛍Shopping'];
 
-const reports = ['Last 10 operations', 'Top 10 operations of month', 'All expenses by category'];
+const reports = [
+  { reportLabel: 'Last 10 operations', reportGetFunction: 'getLastOperations' },
+  { reportLabel: 'Top 10 operations of month', reportGetFunction: 'getMonthTopTenOperations' },
+  { reportLabel: 'All expenses by category', reportGetFunction: 'getOperationsByCategory' },
+];
 
 const totalWordRegex = new RegExp(/итог|итого|total/gi);
 

@@ -14,19 +14,10 @@ mainMenuScene.hears('Add operation', ctx => {
   ctx.scene.enter('addOperationScene');
 });
 
-const getOperationsFromJSON = operations => {
-  return operations.reduce((message, operation) => {
-    const { createdAt, category, amount, notes } = operation;
-    const date = new Date(createdAt).toLocaleDateString();
-    message += `[${date}] *${amount}* - ${category} ${notes ? `(${notes})` : ''}\n`;
-    return message;
-  }, '');
-};
-
-reports.map(reportType => {
-  mainMenuScene.hears(reportType, async ctx => {
-    const operations = await ctx.db.getLastOperations(ctx.from.id);
-    ctx.replyWithMarkdown(getOperationsFromJSON(operations));
+reports.map(({ reportLabel, reportGetFunction }) => {
+  mainMenuScene.hears(reportLabel, async ctx => {
+    const reportData = await ctx.db[reportGetFunction](ctx.from.id);
+    ctx.replyWithMarkdown(reportData);
   });
 });
 

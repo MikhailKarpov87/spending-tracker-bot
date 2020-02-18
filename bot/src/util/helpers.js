@@ -56,4 +56,28 @@ const getKeyboardForItems = items =>
     .resize()
     .extra();
 
-module.exports = { getTextFromFile, getAmountFromText, getExactValueFromText, getKeyboardForItems };
+const getOperationsFromJSON = operations => {
+  return operations.reduce((message, operation) => {
+    const { createdAt, category, amount, notes } = operation;
+    const date = new Date(createdAt).toLocaleDateString();
+    message += `[${date}] *${amount}* - ${category} ${notes ? `(${notes})` : ''}\n`;
+    return message;
+  }, '');
+};
+
+const getCategoriesReportFromJSON = categories => {
+  return categories.reduce((message, operation) => {
+    const { _id, amount } = operation;
+    message += `${_id} -  *${amount}*\n`;
+    return message;
+  }, '');
+};
+
+module.exports = {
+  getTextFromFile,
+  getAmountFromText,
+  getExactValueFromText,
+  getKeyboardForItems,
+  getOperationsFromJSON,
+  getCategoriesReportFromJSON,
+};
