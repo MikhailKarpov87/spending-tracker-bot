@@ -1,4 +1,6 @@
+export {};
 require('dotenv').config();
+import { CustomSceneContext } from '../../types';
 const _ = require('lodash');
 const botToken = process.env.BOT_TOKEN;
 const Scene = require('telegraf/scenes/base');
@@ -8,18 +10,18 @@ const { initialState, messages } = require('../../util/constants');
 
 const addOperationScene = new Scene('addOperationScene');
 
-addOperationScene.enter(async ctx => {
+addOperationScene.enter(async (ctx: CustomSceneContext) => {
   console.log('Entered addOperation scene');
   await ctx.reply(messages.enterAmountOrSendPhoto, getKeyboardForItems(backMenuItem));
 });
 
-addOperationScene.leave(async ctx => {
+addOperationScene.leave(async (ctx: CustomSceneContext) => {
   console.log('Left addOperation scene');
 });
 
-addOperationScene.hears('Back', ctx => ctx.scene.enter('mainMenuScene'));
+addOperationScene.hears('Back', (ctx: CustomSceneContext) => ctx.scene.enter('mainMenuScene'));
 
-addOperationScene.on('message', async ctx => {
+addOperationScene.on('message', async (ctx: CustomSceneContext) => {
   // Setting initial values for current session
   ctx.session = { ...initialState };
 
@@ -39,17 +41,17 @@ addOperationScene.on('message', async ctx => {
     await ctx.telegram
       .getFile(photo.file_id)
       .then(({ file_path }) => {
-        ctx.session.receiptImageUrl = `https://api.telegram.org/file/bot${botToken}/${file_path}`;
-        return getTextFromFile(ctx.session.receiptImageUrl);
+        ctx.session.imageUrl = `https://api.telegram.org/file/bot${botToken}/${file_path}`;
+        return getTextFromFile(ctx.session.imageUrl);
       })
-      .then(text => getAmountFromText(text))
-      .then(amount => {
+      .then((text) => getAmountFromText(text))
+      .then((amount) => {
         ctx.session.amount = amount;
         clearInterval(typingStatus);
         ctx.scene.enter('selectCategoryScene');
       })
-      .catch(error => ctx.reply(error.message))
-      .catch(error => ctx.reply(error.message))
+      .catch((error) => ctx.reply(error.message))
+      .catch((error) => ctx.reply(error.message))
       .finally(() => clearInterval(typingStatus));
   }
 });

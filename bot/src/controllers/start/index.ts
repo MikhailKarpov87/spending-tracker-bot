@@ -1,3 +1,5 @@
+export {};
+import { CustomSceneContext } from '../../types';
 const Scene = require('telegraf/scenes/base');
 const { messages } = require('../../util/constants');
 const { mainMenuItems } = require('../../util/keyboards');
@@ -6,7 +8,7 @@ const { defaultCategories } = require('../../util/constants');
 
 const startScene = new Scene('startScene');
 
-startScene.enter(async ctx => {
+startScene.enter(async (ctx: CustomSceneContext) => {
   const { username, id } = ctx.message.from;
   const foundUser = await ctx.db.getUser(id);
 

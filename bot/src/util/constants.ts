@@ -1,12 +1,16 @@
+export {};
+import { SessionObject } from '../types';
+
 const messages = {
-  welcomeMessage: username =>
+  welcomeMessage: (username: string) =>
     `Hey, *${username}*! Let's track your expenses 🤖. Use menu to add your operations or to view reports.`,
-  welcomeBack: username => `Welcome back, *${username}*!`,
+  welcomeBack: (username: string) => `Welcome back, *${username}*!`,
   valueNotFoundOnPhoto: 'Operation value was not found on photo. Please load another photo or enter value manually.',
-  chooseCategoryOrEnterAmount: amount =>
+  chooseCategoryOrEnterAmount: (amount: number) =>
     `Operation amount is *${amount}*. Choose category if it is a correct amount or enter amount manually.`,
   chooseCategory: 'What report do you want to see',
-  operationWasAdded: operationData => `✅ Operation was added: *${operationData.amount}* for ${operationData.category}`,
+  operationWasAdded: (operationData: SessionObject) =>
+    `✅ Operation was added: *${operationData.amount}* for ${operationData.category}`,
   enterAmountOrSendPhoto: 'Enter amount or send a photo of receipt with Total amount',
   waitSearchingForAmount: "Please wait. I'm searching for *Total* value on the photo 🤖",
   useMenuButtons: 'Please use menu buttons to add operation or view reports',
@@ -33,4 +37,4 @@ const initialState = {
   category: undefined,
 };
 
-module.exports = { defaultCategories, initialState, messages, totalWordRegex, amountRegex, reports };
+export { defaultCategories, initialState, messages, totalWordRegex, amountRegex, reports };

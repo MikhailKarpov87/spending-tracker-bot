@@ -2,3 +2,5 @@ mongo/data
 node_modules
 .env
 *.tmp*
+*/dist/*
+.DS_Store

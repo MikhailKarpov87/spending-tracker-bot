@@ -1,3 +1,5 @@
+export {};
+import { OperationObject } from '../types';
 require('dotenv').config();
 const { OCR_SERVICE_URL } = process.env;
 const { Markup } = require('telegraf');
@@ -5,12 +7,12 @@ const axios = require('axios');
 const FormData = require('form-data');
 const { messages, totalWordRegex, amountRegex } = require('./constants');
 
-const getTextFromFile = fileUrl => {
+const getTextFromFile = (fileUrl: string) => {
   const filename = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
   return axios
     .get(fileUrl, { responseType: 'stream' })
-    .then(response => {
+    .then((response) => {
       const formData = new FormData();
       formData.append('languages', 'eng,rus');
       formData.append('file', response.data, { filename });
@@ -24,16 +26,16 @@ const getTextFromFile = fileUrl => {
     .catch(console.log);
 };
 
-const getExactValueFromText = text => {
+const getExactValueFromText = (text: string) => {
   const isValueExists = text.search(amountRegex) !== -1;
 
   if (!isValueExists) return null;
   const match = text.match(amountRegex);
 
-  return match[2] ? Number(+match[1] + match[2] / 100) : Number(match[0]);
+  return match[2] ? Number(Number(match[1]) + Number(match[2]) / 100) : Number(match[0]);
 };
 
-const getAmountFromText = text => {
+const getAmountFromText = (text: string) => {
   const textRows = text.split('\n');
 
   return new Promise((resolve, reject) => {
@@ -51,12 +53,9 @@ const getAmountFromText = text => {
   });
 };
 
-const getKeyboardForItems = items =>
-  Markup.keyboard(items)
-    .resize()
-    .extra();
+const getKeyboardForItems = (items: Array<string>) => Markup.keyboard(items).resize().extra();
 
-const getOperationsFromJSON = operations => {
+const getOperationsFromJSON = (operations: Array<OperationObject>) => {
   return operations.reduce((message, operation) => {
     const { createdAt, category, amount, notes } = operation;
     const date = new Date(createdAt).toLocaleDateString();
@@ -65,8 +64,8 @@ const getOperationsFromJSON = operations => {
   }, '');
 };
 
-const getCategoriesReportFromJSON = categories => {
-  return categories.reduce((message, operation) => {
+const getCategoriesReportFromJSON = (operations: Array<OperationObject>) => {
+  return operations.reduce((message, operation) => {
     const { _id, amount } = operation;
     message += `${_id} -  *${amount}*\n`;
     return message;

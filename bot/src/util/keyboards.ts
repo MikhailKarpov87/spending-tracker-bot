@@ -1,6 +1,8 @@
-const { reports } = require('./constants');
+export {};
+import { reports } from './constants';
+import { ReportsObject } from '../types';
 
-const reportLabels = reports.map(report => report.reportLabel);
+const reportLabels = reports.map((report: ReportsObject) => report.reportLabel);
 const mainMenuItems = [['Add operation'], reportLabels];
 const operationAddedMenuItems = ['Back', 'Add another'];
 const backMenuItem = ['Back'];

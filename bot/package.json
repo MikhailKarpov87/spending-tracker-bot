@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "start": "nodemon ./src/index.js",
+    "start": "tsc && node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,9 +15,14 @@
     "form-data": "^3.0.0",
     "lodash": "^4.17.15",
     "mongoose": "^5.8.10",
-    "telegraf": "^3.36.0"
+    "telegraf": "3.36.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "@types/lodash": "^4.14.149",
+    "@types/mongoose": "^5.7.3",
+    "@types/nodemon": "^1.19.0",
+    "nodemon": "^1.19.4",
+    "tslint": "^6.0.0",
+    "typescript": "^3.8.3"
   }
 }
