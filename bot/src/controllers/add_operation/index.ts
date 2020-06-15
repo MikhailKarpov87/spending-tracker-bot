@@ -1,12 +1,11 @@
-export {};
-require('dotenv').config();
+import _ from 'lodash';
 import { CustomSceneContext } from '../../types';
-const _ = require('lodash');
-const botToken = process.env.BOT_TOKEN;
-const Scene = require('telegraf/scenes/base');
-const { backMenuItem } = require('../../util/keyboards');
-const { getTextFromFile, getAmountFromText, getExactValueFromText, getKeyboardForItems } = require('../../util/helpers');
-const { initialState, messages } = require('../../util/constants');
+import Scene from 'telegraf/scenes/base';
+import { backMenuItem } from '../../util/keyboards';
+import { getTextFromFile, getAmountFromText, getExactValueFromText, getKeyboardForItems } from '../../util/helpers';
+import { initialState, messages } from '../../util/constants';
+
+const { BOT_TOKEN } = process.env;
 
 const addOperationScene = new Scene('addOperationScene');
 
@@ -41,11 +40,11 @@ addOperationScene.on('message', async (ctx: CustomSceneContext) => {
     await ctx.telegram
       .getFile(photo.file_id)
       .then(({ file_path }) => {
-        ctx.session.imageUrl = `https://api.telegram.org/file/bot${botToken}/${file_path}`;
+        ctx.session.imageUrl = `https://api.telegram.org/file/bot${BOT_TOKEN}/${file_path}`;
         return getTextFromFile(ctx.session.imageUrl);
       })
       .then((text) => getAmountFromText(text))
-      .then((amount) => {
+      .then((amount: number) => {
         ctx.session.amount = amount;
         clearInterval(typingStatus);
         ctx.scene.enter('selectCategoryScene');
@@ -56,4 +55,4 @@ addOperationScene.on('message', async (ctx: CustomSceneContext) => {
   }
 });
 
-module.exports = addOperationScene;
+export default addOperationScene;

@@ -1,8 +1,11 @@
+mongo/data
 node_modules
-pics/
+.env
+*.tmp*
+*/dist/*
+.DS_Store
 .idea/
 .pytest_cache/
 __pycache__/
-.DS_Store
 training/*
-README.*
+.vscode

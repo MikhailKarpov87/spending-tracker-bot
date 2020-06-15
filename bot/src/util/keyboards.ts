@@ -1,4 +1,3 @@
-export {};
 import { reports } from './constants';
 import { ReportsObject } from '../types';
 
@@ -8,4 +7,4 @@ const operationAddedMenuItems = ['Back', 'Add another'];
 const backMenuItem = ['Back'];
 const addAnotherOperationMenuItem = ['Add another'];
 
-module.exports = { mainMenuItems, operationAddedMenuItems, backMenuItem, addAnotherOperationMenuItem };
+export { mainMenuItems, operationAddedMenuItems, backMenuItem, addAnotherOperationMenuItem };

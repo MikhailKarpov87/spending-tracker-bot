@@ -1,25 +1,24 @@
-export {};
 import { OperationObject } from '../types';
-require('dotenv').config();
-const { OCR_SERVICE_URL } = process.env;
-const { Markup } = require('telegraf');
-const axios = require('axios');
-const FormData = require('form-data');
-const { messages, totalWordRegex, amountRegex } = require('./constants');
+import { Markup } from 'telegraf';
+import axios from 'axios';
+import FormData from 'form-data';
+import { messages, totalWordRegex, amountRegex } from './constants';
+
+const { OCR_SERVICE_PORT } = process.env;
 
 const getTextFromFile = (fileUrl: string) => {
   const filename = fileUrl.substr(fileUrl.lastIndexOf('/') + 1);
 
   return axios
     .get(fileUrl, { responseType: 'stream' })
-    .then((response) => {
+    .then(response => {
       const formData = new FormData();
       formData.append('languages', 'eng,rus');
       formData.append('file', response.data, { filename });
 
       return axios
         .create({ headers: formData.getHeaders() })
-        .post(`${OCR_SERVICE_URL}/file`, formData)
+        .post(`http://ocr:${OCR_SERVICE_PORT}/file`, formData)
         .then(({ data: { result } }) => result)
         .catch(console.log);
     })
@@ -53,15 +52,17 @@ const getAmountFromText = (text: string) => {
   });
 };
 
-const getKeyboardForItems = (items: Array<string>) => Markup.keyboard(items).resize().extra();
+const getKeyboardForItems = (items: string[][] | string[]) => Markup.keyboard(items).resize().extra();
 
 const getOperationsFromJSON = (operations: Array<OperationObject>) => {
-  return operations.reduce((message, operation) => {
+  const resultMessage = operations.reduce((message, operation) => {
     const { createdAt, category, amount, notes } = operation;
     const date = new Date(createdAt).toLocaleDateString();
     message += `[${date}] *${amount}* - ${category} ${notes ? `(${notes})` : ''}\n`;
     return message;
   }, '');
+
+  return resultMessage || 'No operations found...';
 };
 
 const getCategoriesReportFromJSON = (operations: Array<OperationObject>) => {
@@ -72,7 +73,7 @@ const getCategoriesReportFromJSON = (operations: Array<OperationObject>) => {
   }, '');
 };
 
-module.exports = {
+export {
   getTextFromFile,
   getAmountFromText,
   getExactValueFromText,

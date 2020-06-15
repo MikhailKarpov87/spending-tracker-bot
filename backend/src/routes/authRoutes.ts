@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const requireLogin = require('../middlewares/requireLogin');
+import mongoose from 'mongoose';
+import requireLogin from '../middlewares/requireLogin';
 
 const Blog = mongoose.model('Blog');
 
-module.exports = app => {
+export default app => {
   app.get('/api/blogs/:id', requireLogin, async (req, res) => {
     const blog = await Blog.findOne({
       _user: req.user.id,

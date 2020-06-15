@@ -1,10 +1,9 @@
-export {};
 import { CustomSceneContext } from '../../types';
-const Scene = require('telegraf/scenes/base');
-const { messages } = require('../../util/constants');
-const { mainMenuItems } = require('../../util/keyboards');
-const { getKeyboardForItems } = require('../../util/helpers');
-const { defaultCategories } = require('../../util/constants');
+import Scene from 'telegraf/scenes/base';
+import { messages } from '../../util/constants';
+import { mainMenuItems } from '../../util/keyboards';
+import { getKeyboardForItems } from '../../util/helpers';
+import { defaultCategories } from '../../util/constants';
 
 const startScene = new Scene('startScene');
 
@@ -23,4 +22,4 @@ startScene.enter(async (ctx: CustomSceneContext) => {
   ctx.scene.enter('mainMenuScene');
 });
 
-module.exports = startScene;
+export default startScene;

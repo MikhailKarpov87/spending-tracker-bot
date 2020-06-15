@@ -1,24 +1,25 @@
-require('dotenv').config();
+
 import { CustomSceneContext } from './types';
-const botToken = process.env.BOT_TOKEN;
-const Telegraf = require('telegraf');
-const Stage = require('telegraf/stage');
-const session = require('telegraf/session');
-const {
+import Telegraf from 'telegraf';
+import Stage from 'telegraf/stage';
+import session from 'telegraf/session';
+import { messages } from './util/constants';
+import startScene from './controllers/start';
+import mainMenuScene from './controllers/main_menu';
+import addOperationScene from './controllers/add_operation';
+import selectCategoryScene from './controllers/select_category';
+import {
   addUser,
   getUser,
   addOperation,
   getLastOperations,
   getMonthTopTenOperations,
   getOperationsByCategory,
-} = require('./actions');
-const { messages } = require('./util/constants');
-const startScene = require('./controllers/start');
-const mainMenuScene = require('./controllers/main_menu');
-const addOperationScene = require('./controllers/add_operation');
-const selectCategoryScene = require('./controllers/select_category');
+} from './actions';
 
-const bot = new Telegraf(botToken);
+const { BOT_TOKEN } = process.env
+
+const bot: Telegraf<CustomSceneContext> = new Telegraf(BOT_TOKEN);
 
 //  Adding db methods into context object
 bot.context.db = { addUser, getUser, addOperation, getLastOperations, getMonthTopTenOperations, getOperationsByCategory };

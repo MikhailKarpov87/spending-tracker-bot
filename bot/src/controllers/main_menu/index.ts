@@ -1,9 +1,8 @@
-export {};
 import { CustomSceneContext, ReportsObject } from '../../types';
-const Scene = require('telegraf/scenes/base');
-const { mainMenuItems } = require('../../util/keyboards');
-const { getKeyboardForItems } = require('../../util/helpers');
-const { messages, reports } = require('../../util/constants');
+import Scene from 'telegraf/scenes/base';
+import { mainMenuItems } from '../../util/keyboards';
+import { getKeyboardForItems } from '../../util/helpers';
+import { messages, reports } from '../../util/constants';
 
 const mainMenuScene = new Scene('mainMenuScene');
 
@@ -25,4 +24,4 @@ reports.map(({ reportLabel, reportGetFunction }: ReportsObject) => {
 
 mainMenuScene.on('message', (ctx: CustomSceneContext) => ctx.reply(messages.useMenuButtons, getKeyboardForItems(mainMenuItems)));
 
-module.exports = mainMenuScene;
+export default mainMenuScene;

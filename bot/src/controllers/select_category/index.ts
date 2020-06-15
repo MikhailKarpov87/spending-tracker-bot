@@ -1,9 +1,8 @@
-export {};
 import { CustomSceneContext } from '../../types';
-const Scene = require('telegraf/scenes/base');
-const { backMenuItem, addAnotherOperationMenuItem } = require('../../util/keyboards');
-const { getExactValueFromText, getKeyboardForItems } = require('../../util/helpers');
-const { defaultCategories, messages } = require('../../util/constants');
+import Scene from 'telegraf/scenes/base';
+import { backMenuItem, addAnotherOperationMenuItem } from '../../util/keyboards';
+import { getExactValueFromText, getKeyboardForItems } from '../../util/helpers';
+import { defaultCategories, messages } from '../../util/constants';
 
 const selectCategoryScene = new Scene('selectCategoryScene');
 
@@ -43,4 +42,4 @@ selectCategoryScene.on('message', async (ctx: CustomSceneContext) => {
   }
 });
 
-module.exports = selectCategoryScene;
+export default selectCategoryScene;

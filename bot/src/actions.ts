@@ -1,20 +1,19 @@
-export {};
-require('dotenv').config();
 import { UserObject, OperationObject } from './types';
-const axios = require('axios');
-const backendUrl = process.env.BACKEND_API_URL;
-const { getOperationsFromJSON, getCategoriesReportFromJSON } = require('./util/helpers');
+import axios from 'axios';
+import { getOperationsFromJSON, getCategoriesReportFromJSON } from './util/helpers';
+const { BACKEND_PORT, BACKEND_BASE_PATH } = process.env;
+const backendURL = `http://backend:${BACKEND_PORT}${BACKEND_BASE_PATH}`;
 
 async function addUser(userData: UserObject) {
   try {
-    return await axios.post(`${backendUrl}/users`, userData);
+    return await axios.post(`${backendURL}/users`, userData);
   } catch {
     return;
   }
 }
 
 async function getUser(userId: string) {
-  const result = await axios.get(`${backendUrl}/users/${userId}`);
+  const result = await axios.get(`${backendURL}/users/${userId}`);
   return result.data;
 }
 
@@ -22,7 +21,7 @@ async function addOperation(operationData: OperationObject) {
   const { userId } = operationData;
 
   try {
-    return await axios.post(`${backendUrl}/operations/${userId}`, operationData);
+    return await axios.post(`${backendURL}/operations/${userId}`, operationData);
   } catch (err) {
     console.log(err);
   }
@@ -30,7 +29,7 @@ async function addOperation(operationData: OperationObject) {
 
 async function getLastOperations(userId: string) {
   try {
-    const result = await axios.get(`${backendUrl}/operations/${userId}/last_10`);
+    const result = await axios.get(`${backendURL}/operations/${userId}/last_10`);
     return getOperationsFromJSON(result.data);
   } catch (err) {
     console.log(err);
@@ -39,7 +38,7 @@ async function getLastOperations(userId: string) {
 
 async function getMonthTopTenOperations(userId: string) {
   try {
-    const result = await axios.get(`${backendUrl}/operations/${userId}/month_top_10`);
+    const result = await axios.get(`${backendURL}/operations/${userId}/month_top_10`);
     return getOperationsFromJSON(result.data);
   } catch (err) {
     console.log(err);
@@ -48,11 +47,11 @@ async function getMonthTopTenOperations(userId: string) {
 
 async function getOperationsByCategory(userId: string) {
   try {
-    const result = await axios.get(`${backendUrl}/operations/${userId}/by_category`);
+    const result = await axios.get(`${backendURL}/operations/${userId}/by_category`);
     return getCategoriesReportFromJSON(result.data);
   } catch (err) {
     console.log(err);
   }
 }
 
-module.exports = { addUser, getUser, addOperation, getLastOperations, getMonthTopTenOperations, getOperationsByCategory };
+export { addUser, getUser, addOperation, getLastOperations, getMonthTopTenOperations, getOperationsByCategory };

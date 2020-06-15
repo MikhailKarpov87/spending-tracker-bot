@@ -1,5 +1,4 @@
-import { SceneContextMessageUpdate } from 'telegraf';
-
+import { SceneContextMessageUpdate, ContextMessageUpdate } from 'telegraf';
 interface SessionObject {
   messageText: string;
   imageUrl: string;
@@ -20,7 +19,6 @@ interface ReportsObject {
   reportLabel: string;
   reportGetFunction: string;
 }
-
 interface OperationObject {
   _id: string;
   userId?: string;

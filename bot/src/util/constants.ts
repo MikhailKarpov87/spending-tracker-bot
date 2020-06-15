@@ -1,4 +1,3 @@
-export {};
 import { SessionObject } from '../types';
 
 const messages = {
@@ -26,7 +25,7 @@ const reports = [
   { reportLabel: 'All expenses by category', reportGetFunction: 'getOperationsByCategory' },
 ];
 
-const totalWordRegex = new RegExp(/итог|итого|total/gi);
+const totalWordRegex = new RegExp(/итог|итого|total|сумма/gi);
 
 const amountRegex = new RegExp(/(\d{1,9})[.\-\,](\d{2})|(\d{1,9})/);
 

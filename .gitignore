@@ -2,5 +2,10 @@ mongo/data
 node_modules
 .env
 *.tmp*
-*/dist/*
+dist/
 .DS_Store
+.idea/
+.pytest_cache/
+__pycache__/
+training/*
+.vscode

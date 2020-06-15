@@ -12,29 +12,34 @@ services:
       - ./mongo/data:/data/db
 
   backend:
+    env_file: .env
     restart: unless-stopped
     build: ./backend
     depends_on:
       - mongo
     ports:
-      - '7000:7000'
+      - $BACKEND_PORT:$BACKEND_PORT
     volumes:
       - ./backend/src:/home/backend/src
+    environment:
+      - MONGO_URI=$MONGO_URI
+      - BACKEND_BASE_PATH=$BACKEND_BASE_PATH
 
   bot:
+    env_file: .env
     restart: unless-stopped
     build: ./bot
     depends_on:
       - backend
     volumes:
       - ./bot/src:/home/bot/src
+    environment:
+      - BOT_TOKEN=$BOT_TOKEN
+      - MONGO_URI=$MONGO_URI
+      - BACKEND_PORT=$BACKEND_PORT
+      - BACKEND_BASE_PATH=$BACKEND_BASE_PATH
+      - OCR_SERVICE_PORT=$OCR_SERVICE_PORT
 
   ocr:
     restart: unless-stopped
     build: ./ocr
-    depends_on:
-      - mongo
-    ports:
-      - '8080:8080'
-    environment:
-      PORT: 8080
