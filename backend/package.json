@@ -5,13 +5,17 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "tsc && node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start-local": "tsc && MONGO_URI=mongodb://financetracker:financetracker@localhost:27017/financetracker BACKEND_BASE_PATH=/api BACKEND_PORT=7300 node ./dist/server.js",
+    "test": "NODE_ENV=test MONGO_URI=mongodb://financetracker:financetracker@localhost:27017/financetracker BACKEND_BASE_PATH=/api BACKEND_PORT=7300 jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.2.0",
     "cookie-session": "1.4.0",
+    "dotenv": "^8.2.0",
     "express": "4.17.1",
+    "mocha": "^8.0.1",
     "mongoose": "5.8.10",
     "passport": "0.4.1"
   },
@@ -21,6 +25,12 @@
     "@types/mongoose": "5.7.3",
     "@types/nodemon": "1.19.0",
     "@types/passport": "1.0.3",
+    "jest": "^26.0.1",
+    "jest-environment-node": "^26.0.1",
+    "mongodb-memory-server": "^6.6.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.1.0",
+    "ts-node": "^8.10.2",
     "tslint": "6.0.0",
     "typescript": "3.8.3"
   }

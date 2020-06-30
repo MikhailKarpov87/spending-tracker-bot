@@ -74,6 +74,17 @@ const operationRoutes = (app: Application) => {
     }
   });
 
+  //  TODO: remove test endpoint
+  app.get(`${BACKEND_BASE_PATH}/operations/test`, async (req: Request, res: Response) => {
+    try {
+      const operations = await Operation.find({}).sort({ createdAt: -1 }).limit(10);
+
+      res.send('Hello test' + operations);
+    } catch (err) {
+      throw new ErrorHandler(500, 'Internal server error');
+    }
+  });
+
   app.post(`${BACKEND_BASE_PATH}/operations/:user_id`, async (req: Request, res: Response) => {
     try {
       const { category, amount, receiptImageUrl, messageText } = req.body;

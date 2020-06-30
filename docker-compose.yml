@@ -10,6 +10,8 @@ services:
       - MONGO_INITDB_DATABASE=admin
     volumes:
       - ./mongo/data:/data/db
+    ports:
+      - 27017:27017
 
   backend:
     env_file: .env
@@ -24,6 +26,7 @@ services:
     environment:
       - MONGO_URI=$MONGO_URI
       - BACKEND_BASE_PATH=$BACKEND_BASE_PATH
+      - BACKEND_PORT=$BACKEND_PORT
 
   bot:
     env_file: .env
