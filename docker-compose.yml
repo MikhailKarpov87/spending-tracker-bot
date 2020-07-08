@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   mongo:
-    restart: unless-stopped
+    restart: always
     build: ./mongo/
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
@@ -10,19 +10,13 @@ services:
       - MONGO_INITDB_DATABASE=admin
     volumes:
       - mongodata:/data/db
-    ports:
-      - 27017:27017
 
   backend:
     env_file: .env
-    restart: unless-stopped
+    restart: always
     build: ./backend
     depends_on:
       - mongo
-    ports:
-      - $BACKEND_PORT:$BACKEND_PORT
-    volumes:
-      - ./backend/src:/home/backend/src
     environment:
       - MONGO_URI=$MONGO_URI
       - BACKEND_BASE_PATH=$BACKEND_BASE_PATH
@@ -30,12 +24,11 @@ services:
 
   bot:
     env_file: .env
-    restart: unless-stopped
+    restart: always
     build: ./bot
     depends_on:
       - backend
-    volumes:
-      - ./bot/src:/home/bot/src
+      - mongo
     environment:
       - BOT_TOKEN=$BOT_TOKEN
       - MONGO_URI=$MONGO_URI
@@ -44,7 +37,7 @@ services:
       - OCR_SERVICE_PORT=$OCR_SERVICE_PORT
 
   ocr:
-    restart: unless-stopped
+    restart: always
     build: ./ocr
 
 volumes:

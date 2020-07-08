@@ -5,9 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "tsc && node ./dist/server.js",
-    "start-local": "tsc && MONGO_URI=mongodb://financetracker:financetracker@localhost:27017/financetracker BACKEND_BASE_PATH=/api BACKEND_PORT=7300 node ./dist/server.js",
-    "test": "jest",
-    "test-local": "NODE_ENV=test BACKEND_BASE_PATH=/api BACKEND_PORT=7300 jest"
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
@@ -21,15 +20,16 @@
     "passport": "0.4.1"
   },
   "devDependencies": {
-    "@types/node": "^14.0.14",
     "@types/express": "4.17.1",
     "@types/lodash": "4.14.149",
     "@types/mongoose": "5.7.3",
+    "@types/node": "^14.0.14",
     "@types/nodemon": "1.19.0",
     "@types/passport": "1.0.3",
     "jest": "^26.0.1",
     "jest-environment-node": "^26.0.1",
     "mongodb-memory-server": "^6.6.1",
+    "nodemon": "^2.0.4",
     "supertest": "^4.0.2",
     "ts-jest": "^26.1.0",
     "ts-node": "^8.10.2",
