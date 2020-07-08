@@ -16,6 +16,7 @@ const operationRoutes = (app: Application) => {
 
       const date = new Date();
       const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+
       const operations = await Operation.find({ userId, createdAt: { $gte: firstDay } })
         .sort({ amount: -1 })
         .limit(10);
@@ -69,17 +70,6 @@ const operationRoutes = (app: Application) => {
       }
 
       res.send(operations);
-    } catch (err) {
-      throw new ErrorHandler(500, 'Internal server error');
-    }
-  });
-
-  //  TODO: remove test endpoint
-  app.get(`${BACKEND_BASE_PATH}/operations/test`, async (req: Request, res: Response) => {
-    try {
-      const operations = await Operation.find({}).sort({ createdAt: -1 }).limit(10);
-
-      res.send('Hello test' + operations);
     } catch (err) {
       throw new ErrorHandler(500, 'Internal server error');
     }

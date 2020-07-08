@@ -9,8 +9,8 @@ const connect = async (MONGO_URI: string) => {
         useFindAndModify: false,
         useUnifiedTopology: true,
       })
-      .then(() => console.log('Connected to mongodb'))
-      .catch((err: Error) => console.log('Error connecting to mongodb:', err.stack));
+      .then(() => console.log('Connected to mongodb:', MONGO_URI))
+      .catch((err: Error) => console.log('Error connecting to mongodb:', MONGO_URI, err.stack));
   }
 };
 
@@ -19,6 +19,30 @@ const truncate = async () => {
     const { collections } = mongoose.connection;
 
     const promises = Object.keys(collections).map(collection => mongoose.connection.collection(collection).deleteMany({}));
+
+    await Promise.all(promises);
+
+    await dropIndexes();
+  }
+};
+
+const dropIndexes = async () => {
+  if (mongoose.connection.readyState !== 0) {
+    const { collections } = mongoose.connection;
+
+    const promises = Object.keys(collections).map(collection => mongoose.connection.collection(collection).dropIndexes());
+
+    await Promise.all(promises);
+  }
+};
+
+const loadTestFixtures = async (fixtures: any) => {
+  if (mongoose.connection.readyState !== 0) {
+    const { collections } = mongoose.connection;
+
+    const promises = Object.keys(collections).map(collection =>
+      mongoose.connection.collection(collection).insert(fixtures[collection])
+    );
 
     await Promise.all(promises);
   }
@@ -31,4 +55,4 @@ const disconnect = async done => {
   }
 };
 
-export default { connect, truncate, disconnect };
+export default { connect, truncate, disconnect, loadTestFixtures };

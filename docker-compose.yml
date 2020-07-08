@@ -9,7 +9,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=rootpass
       - MONGO_INITDB_DATABASE=admin
     volumes:
-      - ./mongo/data:/data/db
+      - mongodata:/data/db
     ports:
       - 27017:27017
 
@@ -46,3 +46,6 @@ services:
   ocr:
     restart: unless-stopped
     build: ./ocr
+
+volumes:
+  mongodata:

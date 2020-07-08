@@ -4,9 +4,10 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "start": "tsc && node ./dist/index.js",
+    "start": "tsc && node ./dist/server.js",
     "start-local": "tsc && MONGO_URI=mongodb://financetracker:financetracker@localhost:27017/financetracker BACKEND_BASE_PATH=/api BACKEND_PORT=7300 node ./dist/server.js",
-    "test": "NODE_ENV=test MONGO_URI=mongodb://financetracker:financetracker@localhost:27017/financetracker BACKEND_BASE_PATH=/api BACKEND_PORT=7300 jest"
+    "test": "jest",
+    "test-local": "NODE_ENV=test BACKEND_BASE_PATH=/api BACKEND_PORT=7300 jest"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "passport": "0.4.1"
   },
   "devDependencies": {
+    "@types/node": "^14.0.14",
     "@types/express": "4.17.1",
     "@types/lodash": "4.14.149",
     "@types/mongoose": "5.7.3",
