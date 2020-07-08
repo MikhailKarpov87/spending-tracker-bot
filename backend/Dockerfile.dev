@@ -1,8 +1,6 @@
 ARG nodeVersion
-FROM node:$nodeVersion-alpine
-RUN apk add --update tini
+FROM node:$nodeVersion
 WORKDIR /home/backend
 COPY ./package.json ./tslint.json ./tsconfig.json ./jest.config.js ./
-COPY ./src ./src
 RUN npm install && npm cache clean -f
-CMD ["/sbin/tini", "npm", "start"]
+CMD ["npm", "run", "dev"]

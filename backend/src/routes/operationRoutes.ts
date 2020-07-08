@@ -16,6 +16,7 @@ const operationRoutes = (app: Application) => {
 
       const date = new Date();
       const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+
       const operations = await Operation.find({ userId, createdAt: { $gte: firstDay } })
         .sort({ amount: -1 })
         .limit(10);

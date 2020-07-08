@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  mongo:
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+      args:
+        - nodeVersion=$NODE_VERSION
+    restart: unless-stopped
+    ports:
+      - $BACKEND_PORT:$BACKEND_PORT
+    volumes:
+      - ./backend/src:/home/backend/src
+      - ./backend/test:/home/backend/test
+    environment:
+      - NODE_ENV=development
+
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile.dev
+      args:
+        - nodeVersion=$NODE_VERSION
+    restart: unless-stopped
+    volumes:
+      - ./bot/src:/home/bot/src
+    environment:
+      - NODE_ENV=development
