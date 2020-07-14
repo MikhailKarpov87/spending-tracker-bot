@@ -12,8 +12,7 @@ startScene.enter(async (ctx: CustomSceneContext) => {
   const foundUser = await ctx.db.getUser(id);
 
   if (!foundUser) {
-    const result = await ctx.db.addUser({ name: username, userId: id, categories: defaultCategories });
-    console.log(result);
+    await ctx.db.addUser({ name: username, userId: id, categories: defaultCategories });
     await ctx.replyWithMarkdown(messages.welcomeMessage(username), getKeyboardForItems(mainMenuItems));
   } else {
     await ctx.replyWithMarkdown(messages.welcomeBack(username), getKeyboardForItems(mainMenuItems));

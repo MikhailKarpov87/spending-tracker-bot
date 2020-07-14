@@ -1,6 +1,6 @@
 ARG nodeVersion
 FROM node:$nodeVersion
 WORKDIR /home/bot
-COPY ./package.json ./tslint.json ./tsconfig.json ./
+COPY ./package.json ./tslint.json ./tsconfig.json ./jest.config.js ./
 RUN npm install && npm cache clean -f
 CMD ["npm", "run", "dev"]
