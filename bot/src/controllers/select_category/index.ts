@@ -14,7 +14,7 @@ selectCategoryScene.enter(async (ctx: CustomSceneContext) => {
   );
 });
 
-defaultCategories.map((category) =>
+defaultCategories.map(category =>
   selectCategoryScene.hears(category, (ctx: CustomSceneContext) => {
     ctx.session.category = ctx.match;
     ctx.db.addOperation({ ...ctx.session, userId: ctx.from.id });
