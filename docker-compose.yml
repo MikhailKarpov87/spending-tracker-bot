@@ -14,7 +14,11 @@ services:
   backend:
     env_file: .env
     restart: always
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - nodeVersion=$NODE_VERSION
     depends_on:
       - mongo
     environment:
@@ -25,7 +29,11 @@ services:
   bot:
     env_file: .env
     restart: always
-    build: ./bot
+    build:
+      context: ./bot
+      dockerfile: Dockerfile
+      args:
+        - nodeVersion=$NODE_VERSION
     depends_on:
       - backend
       - mongo
