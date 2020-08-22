@@ -26,6 +26,20 @@ services:
       - BACKEND_BASE_PATH=$BACKEND_BASE_PATH
       - BACKEND_PORT=$BACKEND_PORT
 
+  frontend:
+    env_file: .env
+    restart: always
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - nodeVersion=$NODE_VERSION
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_BASE_PATH=$BACKEND_BASE_PATH
+      - BACKEND_PORT=$BACKEND_PORT
+
   bot:
     env_file: .env
     restart: always

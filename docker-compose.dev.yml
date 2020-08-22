@@ -21,6 +21,21 @@ services:
     environment:
       - NODE_ENV=development
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+      args:
+        - nodeVersion=$NODE_VERSION
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./frontend/src:/home/frontend/src
+      - ./frontend/test:/home/frontend/test
+    environment:
+      - NODE_ENV=development
+
   bot:
     build:
       context: ./bot
@@ -33,3 +48,4 @@ services:
       - ./bot/test:/home/bot/test
     environment:
       - NODE_ENV=development
+      - BOT_TOKEN=$BOT_TOKEN_DEV
