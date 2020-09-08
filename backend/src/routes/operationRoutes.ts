@@ -1,69 +1,47 @@
 import mongoose from 'mongoose';
 import { Request, Response, Application } from 'express';
 import { ErrorHandler } from '../helpers/error';
+import { periodOptions, sortOptions } from '../constants';
+import { SortOption, PeriodOption } from '../types';
+import { start } from 'repl';
 // const requireLogin = require('../middlewares/requireLogin');
 require('../models/Operation');
 const Operation = mongoose.model('Operation');
 const { BACKEND_BASE_PATH } = process.env;
 
 const operationRoutes = (app: Application) => {
-  app.get(`${BACKEND_BASE_PATH}/operations/:user_id/month_top_10`, async (req: Request, res: Response) => {
+  app.get(`${BACKEND_BASE_PATH}/operations/:user_id/:period/:sort_by?`, async (req: Request, res: Response) => {
     try {
-      const userId = req.params.user_id;
-      if (!userId) {
+      const { user_id, period, sort_by = 'by_date' } = req.params;
+      const startFrom: number = req.query['start-from'] ? Number(req.query['start-from']) : 0;
+
+      const currentPeriod: PeriodOption = periodOptions.find(({ id }) => id === period);
+      const currentSortOption: SortOption = sortOptions.find(({ id }) => id === sort_by);
+
+      if (!user_id) {
         throw new ErrorHandler(401, 'Missing user_id');
       }
 
-      const date = new Date();
-      const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-
-      const operations = await Operation.find({ userId, createdAt: { $gte: firstDay } })
-        .sort({ amount: -1 })
-        .limit(10);
-
-      if (!operations) {
-        throw new ErrorHandler(500, 'Internal server error');
+      if (!currentPeriod) {
+        throw new ErrorHandler(400, 'Missing period');
       }
 
-      res.send(operations);
-    } catch (err) {
-      throw new ErrorHandler(500, 'Internal server error');
-    }
-  });
+      const date: Date = new Date();
 
-  app.get(`${BACKEND_BASE_PATH}/operations/:user_id/by_category`, async (req: Request, res: Response) => {
-    try {
-      const userId = req.params.user_id;
+      const dateFrom: Date = currentPeriod.dateFrom(date);
+      const dateTo: Date = currentPeriod.dateTo(date);
 
-      if (!userId) {
-        throw new ErrorHandler(401, 'Missing user_id');
-      }
-
-      const operations = await Operation.aggregate([
-        { $match: { userId } },
-        { $group: { _id: '$category', amount: { $sum: '$amount' } } },
-        { $sort: { category: -1 } },
-      ]).sort({ amount: -1 });
-
-      if (!operations) {
-        throw new ErrorHandler(500, 'Internal server error');
-      }
-
-      res.send(operations);
-    } catch (err) {
-      throw new ErrorHandler(500, 'Internal server error');
-    }
-  });
-
-  app.get(`${BACKEND_BASE_PATH}/operations/:user_id/last_10`, async (req: Request, res: Response) => {
-    try {
-      const userId = req.params.user_id;
-
-      if (!userId) {
-        throw new ErrorHandler(401, 'Missing user_id');
-      }
-
-      const operations = await Operation.find({ userId }).sort({ createdAt: -1 }).limit(10);
+      const operations: Array<SortOption> =
+        currentSortOption.id === 'by_category'
+          ? await Operation.aggregate([
+              { $match: { userId: user_id } },
+              { $group: { _id: '$category', amount: { $sum: '$amount' } } },
+              { $sort: { category: -1 } },
+            ]).sort(currentSortOption.sort)
+          : await Operation.find({ userId: user_id, createdAt: { $gte: dateFrom, $lte: dateTo } })
+              .sort(currentSortOption.sort)
+              .skip(startFrom)
+              .limit(10);
 
       if (!operations) {
         throw new ErrorHandler(500, 'Internal server error');

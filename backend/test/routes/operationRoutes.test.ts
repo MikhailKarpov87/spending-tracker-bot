@@ -23,28 +23,29 @@ describe('Operation routes', () => {
     });
 
     test('should get 0 operations: last_10', async () => {
-      const res = await request.get(`/api/operations/${userId}/last_10`);
+      const res = await request.get(`/api/operations/${userId}/all_time`);
       const result = JSON.parse(res.text);
 
       expect(result.length).toEqual(0);
     });
 
     test('should get 0 operations: by_category', async () => {
-      const res = await request.get(`/api/operations/${userId}/by_category`);
+      const res = await request.get(`/api/operations/${userId}/all_time/by_category`);
       const result = JSON.parse(res.text);
 
       expect(result.length).toEqual(0);
     });
 
     test('should get 0 operations: month_top_10', async () => {
-      const res = await request.get(`/api/operations/${userId}/month_top_10`);
+      const res = await request.get(`/api/operations/${userId}/this_month`);
+      console.log(res.text);
       const result = JSON.parse(res.text);
 
       expect(result.length).toEqual(0);
     });
 
     test('should get 0 operations for non existent user', async () => {
-      const res = await request.get(`/api/operations/some_user_id/last_10`);
+      const res = await request.get(`/api/operations/some_user_id/this_month`);
       const result = JSON.parse(res.text);
 
       expect(result.length).toEqual(0);
@@ -58,14 +59,14 @@ describe('Operation routes', () => {
     });
 
     test('should get correct operations number: last_10', async () => {
-      const res = await request.get(`/api/operations/${userId}/last_10`);
+      const res = await request.get(`/api/operations/${userId}/all_time/by_date`);
       const result = JSON.parse(res.text);
 
       expect(result.length).toEqual(10);
     });
 
     test('should get correct operations number: by_category', async () => {
-      const res = await request.get(`/api/operations/${userId}/by_category`);
+      const res = await request.get(`/api/operations/${userId}/all_time/by_category`);
       const result = JSON.parse(res.text);
       const categoriesNum = getCategoriesNumFromOperations(fixtures.operations);
 
@@ -73,7 +74,7 @@ describe('Operation routes', () => {
     });
 
     test('should get correct operations number: month_top_10', async () => {
-      const res = await request.get(`/api/operations/${userId}/month_top_10`);
+      const res = await request.get(`/api/operations/${userId}/this_month/by_amount`);
       const result = JSON.parse(res.text);
 
       expect(result.length).toEqual(10);
@@ -81,10 +82,28 @@ describe('Operation routes', () => {
 
     test('should get empty result for non existent user', async () => {
       const userId = 'some_fake_id';
-      const res = await request.get(`/api/operations/${userId}/last_10`);
+      const res = await request.get(`/api/operations/${userId}/all_time/by_date`);
       const result = JSON.parse(res.text);
 
       expect(result.length).toEqual(0);
+    });
+
+    test('should get 0 operations for non-zero startFrom parameter', async () => {
+      const res = await request.get(`/api/operations/${userId}/all_time/by_date?start-from=42`);
+      const result = JSON.parse(res.text);
+
+      expect(result.length).toEqual(0);
+    });
+
+    test('should get 0 operations for startFrom parameter > number of fixtures', async () => {
+      const startFrom = 5;
+      const totalOperationsNum = fixtures.operations.length;
+      const res = await request.get(`/api/operations/${userId}/all_time/by_date?start-from=5`);
+      const result = JSON.parse(res.text);
+
+      const correctResultNum = totalOperationsNum - startFrom - 1;
+
+      expect(result.length).toEqual(correctResultNum);
     });
   });
 
@@ -104,7 +123,7 @@ describe('Operation routes', () => {
 
     test('should get added operation', async () => {
       await request.post(`/api/operations/${userId}`).send(operation);
-      const res = await request.get(`/api/operations/${userId}/last_10`);
+      const res = await request.get(`/api/operations/${userId}/this_month`);
       const resultOperation = JSON.parse(res.text)[0];
 
       expect(resultOperation).toMatchObject(operation);

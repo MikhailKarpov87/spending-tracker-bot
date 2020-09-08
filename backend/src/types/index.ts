@@ -1,11 +1,21 @@
-
 interface ErrorInterfaceConstructor extends Error {
-    new(statusCode: number, message: string): ErrorInterface
+  new (statusCode: number, message: string): ErrorInterface;
 }
 
 interface ErrorInterface extends Error {
-    statusCode: number,
-    message: string
+  statusCode: number;
+  message: string;
 }
 
-export { ErrorInterfaceConstructor, ErrorInterface }
+type SortOption = {
+  id: string;
+  sort: object;
+};
+
+type PeriodOption = {
+  id: string;
+  dateFrom(date: Date): Date;
+  dateTo(date: Date): Date;
+};
+
+export { ErrorInterfaceConstructor, ErrorInterface, SortOption, PeriodOption };

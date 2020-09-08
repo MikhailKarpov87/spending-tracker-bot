@@ -50,7 +50,7 @@ class MainPage extends Component<MainPageProps, MainPageState> {
   loadOperationsData(period?: string) {
     console.log(period);
     axios
-      .get('http://localhost:7000/api/operations/327390801/month_top_10')
+      .get('http://localhost:7000/api/operations/327390801/this_month/by_amount')
       .then(({ data }) => {
         this.setState({ operations: data });
       })

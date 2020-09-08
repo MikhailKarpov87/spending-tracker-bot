@@ -8,3 +8,11 @@ declare namespace NodeJS {
     MONGO_URI?: string;
   }
 }
+
+declare namespace Express {
+  export interface Request {
+    user_id: string;
+    period?: string;
+    sort_by?: string;
+  }
+}

@@ -29,7 +29,7 @@ async function addOperation(operationData: OperationObject) {
 
 async function getLastOperations(userId: string) {
   try {
-    const result = await axios.get(`${backendURL}/operations/${userId}/last_10`);
+    const result = await axios.get(`${backendURL}/operations/${userId}/all_time`);
     return getOperationsFromJSON(result.data);
   } catch (err) {
     console.log(err);
@@ -38,7 +38,7 @@ async function getLastOperations(userId: string) {
 
 async function getMonthTopTenOperations(userId: string) {
   try {
-    const result = await axios.get(`${backendURL}/operations/${userId}/month_top_10`);
+    const result = await axios.get(`${backendURL}/operations/${userId}/this_month/by_amount`);
     return getOperationsFromJSON(result.data);
   } catch (err) {
     console.log(err);
@@ -47,7 +47,7 @@ async function getMonthTopTenOperations(userId: string) {
 
 async function getOperationsByCategory(userId: string) {
   try {
-    const result = await axios.get(`${backendURL}/operations/${userId}/by_category`);
+    const result = await axios.get(`${backendURL}/operations/${userId}/all_time/by_category`);
     return getCategoriesReportFromJSON(result.data);
   } catch (err) {
     console.log(err);
