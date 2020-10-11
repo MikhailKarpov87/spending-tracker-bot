@@ -16,7 +16,7 @@ import { getOperationsTotalValue } from '@/commons/helpers';
 import { sortTypes } from '@/commons/constants';
 import { periods } from '@/commons/constants';
 
-const userId: string = '327390801';
+const userId: string = '42';
 
 type PathParamsType = {
   period: string;

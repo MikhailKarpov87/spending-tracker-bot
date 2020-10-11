@@ -1,6 +1,7 @@
 import app from './app';
 import databaseHelper from './helpers/db';
 import http from 'http';
+import fixtures from '../test/fixtures/';
 
 const { BACKEND_PORT, MONGO_URI, NODE_ENV } = process.env;
 
@@ -15,6 +16,10 @@ function createHttpServer() {
 if (NODE_ENV !== 'test') {
   databaseHelper.connect(MONGO_URI);
   createHttpServer();
+}
+
+if (NODE_ENV === 'development') {
+  databaseHelper.loadTestFixtures(fixtures);
 }
 
 module.exports = createHttpServer;

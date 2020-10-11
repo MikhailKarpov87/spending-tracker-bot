@@ -41,7 +41,7 @@ const loadTestFixtures = async (fixtures: any) => {
     const { collections } = mongoose.connection;
 
     const promises = Object.keys(collections).map(collection =>
-      mongoose.connection.collection(collection).insert(fixtures[collection])
+      mongoose.connection.collection(collection).insertMany(fixtures[collection])
     );
 
     await Promise.all(promises);
