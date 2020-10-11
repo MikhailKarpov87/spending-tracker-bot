@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const webpack = require('webpack');
 
 const { isProduction, addIfProd, addIfDev } = require('./env');
 
@@ -41,6 +42,11 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.BACKEND_BASE_PATH': JSON.stringify(process.env.BACKEND_BASE_PATH),
+      'process.env.BACKEND_PORT': JSON.stringify(process.env.BACKEND_PORT),
+    }),
+    new webpack.EnvironmentPlugin(['BACKEND_BASE_PATH', 'BACKEND_PORT']),
     new HtmlWebpackPlugin({
       title: 'telegram-finance-control',
       meta: {

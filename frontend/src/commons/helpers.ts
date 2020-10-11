@@ -1,8 +1,12 @@
-import { periods } from '@/commons/constants';
+import { OperationObject } from '@/types';
 
-const getPeriodNameById = (id: string) => {
-  const index: string | undefined = Object.keys(periods).find(periodId => periodId === id);
-  return index !== undefined ? periods[index] : null;
+const getOperationsTotalValue = (operations: Array<OperationObject>) => {
+  return operations.length
+    ? operations.reduce((sum, val) => {
+        sum += val.amount;
+        return sum;
+      }, 0)
+    : 0;
 };
 
-export { getPeriodNameById };
+export { getOperationsTotalValue };

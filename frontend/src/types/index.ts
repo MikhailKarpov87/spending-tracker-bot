@@ -6,4 +6,9 @@ interface OperationObject {
   notes: string;
 }
 
-export { OperationObject };
+interface InfoObject {
+  id: string;
+  name: string;
+}
+
+export { OperationObject, InfoObject };

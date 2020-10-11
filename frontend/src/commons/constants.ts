@@ -4,4 +4,11 @@ const periods = [
   { id: 'all_time', name: 'ALL TIME' },
 ];
 
-export { periods };
+const sortTypes = [
+  { id: 'by_date', name: 'Most recent' },
+  { id: 'by_amount', name: 'Most expensive' },
+];
+
+const BACKEND_URL = `http://localhost:${process.env.BACKEND_PORT}${process.env.BACKEND_BASE_PATH}`;
+
+export { periods, BACKEND_URL, sortTypes };
