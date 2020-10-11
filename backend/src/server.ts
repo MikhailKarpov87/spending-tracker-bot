@@ -19,6 +19,7 @@ if (NODE_ENV !== 'test') {
 }
 
 if (NODE_ENV === 'development') {
+  databaseHelper.truncate();
   databaseHelper.loadTestFixtures(fixtures);
 }
 
