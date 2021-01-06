@@ -13,7 +13,7 @@
     "ci": "npm test:ci && npm build"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "core-js": "3.6.5",
     "normalize.css": "8.0.1",
